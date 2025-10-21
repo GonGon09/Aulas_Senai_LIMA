@@ -1,0 +1,48 @@
+header{
+    background-color: black;
+    color: white;
+    text-align: center;
+    height: 150px;
+    width: 100%;
+    margin: 0;
+    padding: 10px 50px;
+    font-size: 30px;
+    font-family:papyrus;
+    text-decoration: none;
+}
+
+h1{
+    font-size: 2.5rem;
+    margin-bottom: 45px;
+    margin-top: 30px;
+}
+
+
+.cabecario a{
+    text-decoration: none;
+    color: white;
+   font-family: arial;
+    font-size: 20px;
+    margin: 10px 10px 10px 15px;
+
+}
+
+.basic{
+    width: 100px;
+            height: 100px;
+            background-color: blue;
+            border: 2px solid black;
+            cursor: pointer; /* Muda o cursor para indicar que é clicável */
+            color: white;
+            text-align: center;
+            line-height: 100px;
+}
+.plano1{
+    border: 2px solid black;
+    width: 500px;
+    height: 500px;
+    
+    color: white;
+    text-align: center;
+    line-height: 100px;
+}

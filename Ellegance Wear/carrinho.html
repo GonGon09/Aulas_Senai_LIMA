@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./carrinho.css">
+    <title>Carrinho de Compras - Loja de Roupas</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💸 Ellegance Wear 💸</h1>
+            <p>Encontre as melhores peças para o seu estilo</p>
+        </div>
+
+        <div class="main-content">
+            <div class="produtos-section">
+                <h2>Produtos Disponíveis:</h2>
+                <div class="produtos-grid" id="produtos-grid">
+
+                </div>
+            </div>
+
+            <div class="carrinho-section">
+                <h2>
+                    Carrinho de Compras
+                    <span class="contador-itens" id="contador-itens" style="display: none;">0</span>
+                </h2>
+                <div id="carrinho-itens">
+                    <div class="carrinho-vazio">
+                        <p>Seu carrinho está vazio</p>
+                        <p>Adicione alguns produtos!</p>
+                    </div>
+                </div>
+                <div class="carrinho-total" id="carrinho-total" style="display: none;">
+                    <div class="total-linha">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">R$ 0,00</span>
+                    </div>
+                    <div class="total-linha">
+                        <span>Frete:</span>
+                        <span id="frete">R$ 5,99</span>
+                    </div>
+                    <div class="total-linha total-final">
+                        <span>Total:</span>
+                        <span id="total-final">R$ 0,00</span>
+                    </div>
+                    <button class="btn-finalizar" onclick="finalizarCompra()">
+                        Finalizar Compra
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const coisas = [
+            { id: 1, nome: "Camiseta Simples", categoria: "Camisetas", tamanho: "M", cor: "Branca", preco: 59.90, emoji: " ", img: "https://images.tcdn.com.br/img/img_prod/976866/camiseta_branca_masculina_em_algodao_listra_dupla_721_1_ab36fea0ad56a90a5e05e33e83642690.jpg" },
+            { id: 2, nome: "Calça Jeans", categoria: "Calças", tamanho: "38", cor: "Azul", preco: 89.90, emoji: " ", img: "https://cdn.dooca.store/90616/products/i3obldm50ylsbjmbwdqlcon3uubtgar8rksj.jpg?v=1684434459&webp=0" },
+            { id: 3, nome: "Vestido com Flores", categoria: "Vestidos", tamanho: "P", cor: "Rosa", preco: 129.90, emoji: " ", img: "" },
+            { id: 4, nome: "Jaqueta de Couro", categoria: "Casacos", tamanho: "G", cor: "Preta", preco: 199.90, emoji: " ", img: "" },
+            { id: 5, nome: "Saia Média", categoria: "Saias", tamanho: "M", cor: "Vermelha", preco: 69.90, emoji: " ", img: "" },
+            { id: 6, nome: "Blusa Formal", categoria: "Blusas", tamanho: "P", cor: "Azul", preco: 79.90, emoji: " ", img: "" }
+        ];
+
+        let cestinha = [];
+
+        function mostrarCoisas() {
+            const grade = document.getElementById('produtos-grid');
+            grade.innerHTML = '';
+
+            coisas.forEach(coisa => {
+                const cardCoisa = document.createElement('div');
+                cardCoisa.className = 'produto-card';
+                cardCoisa.innerHTML = `
+    <div class="produto-img">
+        <img src="${coisa.img}" alt="${coisa.nome}">
+    </div>
+    <div class="produto-info">
+        <h3>${coisa.nome}</h3>
+        <p>Tipo: ${coisa.categoria}</p>
+        <p>Tamanho: ${coisa.tamanho}</p>
+        <p>Cor: ${coisa.cor}</p>
+        <div class="produto-preco">R$ ${coisa.preco.toFixed(2).replace('.', ',')}</div>
+        <button class="btn-adicionar" onclick="colocarNaCestinha(${coisa.id})">
+            Colocar no Carrinho
+        </button>
+    </div>
+                `;
+                grade.appendChild(cardCoisa);
+            });
+        }
+
+        function colocarNaCestinha(coisaId) {
+            const coisa = coisas.find(c => c.id === coisaId);
+            if (coisa) {
+                const coisaJaTem = cestinha.find(item => item.id === coisaId);
+                if (coisaJaTem) {
+                    coisaJaTem.quantidade += 1;
+                } else {
+                    cestinha.push({
+                        ...coisa,
+                        quantidade: 1
+                    });
+                }
+                mostrarCestinha();
+                mostrarAviso(`${coisa.nome} foi colocado no!`);
+            }
+        }
+
+        function tirarDaCestinha(coisaId) {
+            cestinha = cestinha.filter(item => item.id !== coisaId);
+            mostrarCestinha();
+        }
+
+        function mostrarCestinha() {
+            const itensCestinha = document.getElementById('carrinho-itens');
+            const contador = document.getElementById('contador-itens');
+            const totalCestinha = document.getElementById('carrinho-total');
+
+            if (cestinha.length === 0) {
+                itensCestinha.innerHTML = `
+                    <div class="carrinho-vazio">
+                        <p>Seu carrinho está vazio</p>
+                        <p>Coloque algumas coisas!</p>
+                    </div>
+                `;
+                contador.style.display = 'none';
+                totalCestinha.style.display = 'none';
+                return;
+            }
+
+            const totalCoisas = cestinha.reduce((total, item) => total + item.quantidade, 0);
+            contador.textContent = totalCoisas;
+            contador.style.display = 'inline';
+
+            itensCestinha.innerHTML = '';
+            cestinha.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'carrinho-item';
+                itemDiv.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-nome">${item.nome}</div>
+                        <div class="item-detalhes">${item.tamanho} • ${item.cor} • Qtd: ${item.quantidade}</div>
+                    </div>
+                    <div class="item-preco">R$ ${(item.preco * item.quantidade).toFixed(2).replace('.', ',')}</div>
+                    <button class="btn-remover" onclick="tirarDaCestinha(${item.id})" title="Tirar item">
+                        ×
+                    </button>
+                `;
+                itensCestinha.appendChild(itemDiv);
+            });
+
+            const valorTotal = cestinha.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+            const frete = valorTotal > 100 ? 0 : 15;
+            const totalFinal = valorTotal + frete;
+
+            document.getElementById('subtotal').textContent = `R$ ${valorTotal.toFixed(2).replace('.', ',')}`;
+            document.getElementById('frete').textContent = frete === 0 ? 'Grátis' : `R$ ${frete.toFixed(2).replace('.', ',')}`;
+            document.getElementById('total-final').textContent = `R$ ${totalFinal.toFixed(2).replace('.', ',')}`;
+
+            totalCestinha.style.display = 'block';
+        }
+
+        function finalizarCompra() {
+            if (cestinha.length === 0) {
+                alert('Sua carrinho está vazio!');
+                return;
+            }
+
+            const valorTotal = cestinha.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+            const frete = valorTotal > 100 ? 0 : 15;
+            const totalFinal = valorTotal + frete;
+
+            const confirmar = confirm(`Terminar compra por R$ ${totalFinal.toFixed(2).replace('.', ',')}?`);
+
+            if (confirmar) {
+                alert('Compra terminada! Obrigado!');
+                cestinha = [];
+                mostrarCestinha();
+            }
+        }
+
+        function mostrarAviso(mensagem) {
+            const aviso = document.createElement('div');
+            aviso.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #27ae60;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 1000;
+                animation: slideInRight 0.3s ease;
+            `;
+            aviso.textContent = mensagem;
+
+            if (!document.getElementById('notification-styles')) {
+                const estilo = document.createElement('style');
+                estilo.id = 'notification-styles';
+                estilo.textContent = `
+                    @keyframes slideInRight {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                `;
+                document.head.appendChild(estilo);
+            }
+
+            document.body.appendChild(aviso);
+
+            setTimeout(() => {
+                aviso.remove();
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            mostrarCoisas();
+            mostrarCestinha();
+        });
+    </script>
+</body>
+
+</html>

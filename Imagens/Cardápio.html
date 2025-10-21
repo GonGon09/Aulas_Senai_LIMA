@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head style="color: rgb(0, 0, 0);">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cardápio - Modelo Semântico</title>
+</head>
+<body>
+  <header style="background-color: black;">
+    <h1 style="color: rgb(215, 32, 32); text-align: center; font-size: 50px;">Cardápio</h1>
+    <p>Modelo semântico básico — personalize o estilo com CSS.</p>
+    <nav aria-label="Seções do cardápio">
+      <ul style="display: inline; text-align: center;">
+        <li><a href="#entradas">Entradas</a></li>
+        <li><a href="#principais">Pratos Principais</a></li>
+        <li><a href="#sobremesas">Sobremesas</a></li>
+        <li><a href="#bebidas">Bebidas</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="entradas" aria-labelledby="entradas-title">
+      <h2 id="entradas-title">Entradas</h2>
+
+      <article class="prato" aria-labelledby="bruschetta-title">
+        <figure>
+          <img src="https://via.placeholder.com/300x200?text=Bruschetta" alt="Bruschetta com tomate e manjericão">
+          <figcaption>Bruschetta clássica</figcaption>
+        </figure>
+        <h3 id="bruschetta-title">Bruschetta</h3>
+        <p>Fatias de pão tostado, tomate, manjericão e azeite extra-virgem.</p>
+        <ul class="tags" aria-hidden="false">
+          <li>vegetariano</li>
+          <li>entrada</li>
+        </ul>
+        <p><a href="#" title="Pedir Bruschetta">Pedir agora</a></p>
+      </article>
+
+      <article class="prato" aria-labelledby="salada-title">
+        <figure>
+          <img src="https://via.placeholder.com/300x200?text=Salada" alt="Salada mista colorida">
+          <figcaption>Salada mista</figcaption>
+        </figure>
+        <h3 id="salada-title">Salada Mista</h3>
+        <p>Mix de folhas, cenoura ralada, tomate-cereja e molho cítrico.</p>
+        <ul class="tags">
+          <li>vegano</li>
+          <li>sem glúten</li>
+        </ul>
+        <p><a href="#" title="Pedir Salada Mista">Pedir agora</a></p>
+      </article>
+    </section>
+
+    <section id="principais" aria-labelledby="principais-title">
+      <h2 id="principais-title">Pratos Principais</h2>
+
+      <article class="prato" aria-labelledby="risotto-title">
+        <figure>
+          <img src="https://via.placeholder.com/300x200?text=Risotto" alt="Risoto cremoso com cogumelos">
+          <figcaption>Risoto de cogumelos</figcaption>
+        </figure>
+        <h3 id="risotto-title">Risoto de Cogumelos</h3>
+        <p>Risoto cremoso preparado com arroz arbóreo, vinho branco e mix de cogumelos.</p>
+        <ul class="tags">
+          <li>vegetariano</li>
+          <li>prato principal</li>
+        </ul>
+        <p><a href="#" title="Pedir Risoto">Pedir agora</a></p>
+      </article>
+
+      <article class="prato" aria-labelledby="filé-title">
+        <figure>
+          <img src="https://via.placeholder.com/300x200?text=File" alt="Filé grelhado com acompanhamento de legumes">
+          <figcaption>Filé grelhado</figcaption>
+        </figure>
+        <h3 id="filé-title">Filé Grelhado</h3>
+        <p>Filé suculento grelhado no ponto, acompanhado de legumes salteados e batatas rústicas.</p>
+        <ul class="tags">
+          <li>carne</li>
+          <li>prato principal</li>
+        </ul>
+        <p><a href="#" title="Pedir Filé Grelhado">Pedir agora</a></p>
+      </article>
+    </section>
+
+    <section id="sobremesas" aria-labelledby="sobremesas-title">
+      <h2 id="sobremesas-title">Sobremesas</h2>
+
+      <article class="prato" aria-labelledby="panna-title">
+        <figure>
+          <img src="https://via.placeholder.com/300x200?text=Panna+Cotta" alt="Panna cotta com calda de frutas vermelhas">
+          <figcaption>Panna Cotta</figcaption>
+        </figure>
+        <h3 id="panna-title">Panna Cotta</h3>
+        <p>Delicada panna cotta servida com calda de frutas vermelhas.</p>
+        <ul class="tags">
+          <li>sem glúten</li>
+          <li>sobremesa</li>
+        </ul>
+        <p><a href="#" title="Pedir Panna Cotta">Pedir agora</a></p>
+      </article>
+    </section>
+
+    <section id="bebidas" aria-labelledby="bebidas-title">
+      <h2 id="bebidas-title">Bebidas</h2>
+
+      <article class="prato" aria-labelledby="suco-title">
+        <figure>
+          <img src="https://via.placeholder.com/300x200?text=Suco" alt="Copo de suco natural">
+          <figcaption>Suco Natural</figcaption>
+        </figure>
+        <h3 id="suco-title">Suco Natural</h3>
+        <p>Suco do dia feito com frutas frescas — pergunte ao garçom sobre as opções.</p>
+        <ul class="tags">
+          <li>vegano</li>
+          <li>bebida</li>
+        </ul>
+        <p><a href="#" title="Pedir Suco">Pedir agora</a></p>
+      </article>
+
+      <article class="prato" aria-labelledby="vinho-title">
+        <figure>
+          <img src="https://via.placeholder.com/300x200?text=Vinho" alt="o">
+          <figcaption>Vinho Tinto</figcaption>
+        </figure>
+        <h3 id="vinho-title">Vinho Tinto</h3>
+        <p>Seleção de rótulos nacionais e importados (preços variam).</p>
+        <ul class="tags">
+          <li>álcool</li>
+          <li>bebida</li>
+        </ul>
+        <p><a href="#" title="Ver carta de vinhos">Ver carta de vinhos</a></p>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; <time datetime="2025">2025</time> Seu Restaurante — Endereço | Telefone</p>
+    <p><a href="#top">Voltar ao topo</a></p>
+  </footer>
+
+</body>
+</html>

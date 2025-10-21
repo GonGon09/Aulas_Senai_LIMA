@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loja de Roupas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <!-- Header -->
+  <header class="bg-gray-800 text-white text-center py-6">
+    <h1 class="text-3xl font-bold">Loja de Roupas</h1>
+    <p class="mt-2 text-lg">Encontre as melhores roupas com os melhores preços!</p>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="bg-gray-700 text-white p-4">
+    <ul class="flex space-x-4 justify-center">
+      <li>
+        <a href="#products" class="hover:text-gray-300 flex items-center" title="Produtos">
+          <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a href="#cart-modal" onclick="openCart()" class="hover:text-gray-300 flex items-center" title="Carrinho">
+          <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+          (<span id="cart-count">0</span>)
+        </a>
+      </li>
+      <li>
+        <a href="#notifications" onclick="showNotifications()" class="hover:text-gray-300 flex items-center" title="Notificações">
+          <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+          </svg>
+          (<span id="notification-count">0</span>)
+        </a>
+      </li>
+      <li>
+        <a href="#admin" onclick="promptAdminLogin()" class="hover:text-gray-300 flex items-center" title="Admin">
+          <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 1.104-.896 2-2 2s-2-.896-2-2 2-4 2-4 2 2.896 2 2zm0 0c0 1.104-.896 2-2 2s-2-.896-2-2 2-4 2-4 2 2.896 2 2zm0 0c0 1.104-.896 2-2 2s-2-.896-2-2 2-4 2-4 2 2.896 2 2z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10v10H7z"></path>
+          </svg>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+      <h2 class="text-2xl font-bold mb-4">Carrinho de Compras</h2>
+      <p>Total: R$ <span id="cart-total">0.00</span></p>
+      <ul id="cart-items" class="space-y-2 mb-4"></ul>
+      <button onclick="clearCart()" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">Limpar Carrinho</button>
+      <button onclick="closeCart()" class="mt-2 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 transition">Fechar</button>
+    </div>
+  </div>
+
+  <!-- Products Section -->
+  <div id="products" class="container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Products will be dynamically populated -->
+  </div>
+
+  <!-- Notifications Section -->
+  <div id="notifications" class="container mx-auto p-6 hidden">
+    <h2 class="text-2xl font-bold mb-4">Notificações</h2>
+    <ul id="notification-list" class="space-y-2"></ul>
+  </div>
+
+  <!-- Admin Panel -->
+  <div id="admin" class="container mx-auto p-6 hidden">
+    <h2 class="text-2xl font-bold mb-4">Painel de Administração</h2>
+    <div id="admin-content" class="hidden">
+      <h3 class="text-xl font-semibold mb-2">Adicionar Novo Produto</h3>
+      <form id="add-product-form" class="space-y-4">
+        <input type="text" id="product-name" placeholder="Nome do Produto" class="w-full p-2 border rounded">
+        <input type="number" id="product-price" placeholder="Preço (R$)" step="0.01" class="w-full p-2 border rounded">
+        <input type="text" id="product-image" placeholder="URL da Imagem" class="w-full p-2 border rounded">
+        <input type="number" id="product-stock" placeholder="Estoque" class="w-full p-2 border rounded">
+        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">Adicionar Produto</button>
+      </form>
+      <h3 class="text-xl font-semibold mt-6 mb-2">Gerenciar Produtos</h3>
+      <ul id="product-list" class="space-y-2"></ul>
+    </div>
+    <div id="admin-login" class="space-y-4">
+      <input type="password" id="admin-password" placeholder="Senha do Admin" class="w-full p-2 border rounded">
+      <button onclick="loginAdmin()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">Entrar</button>
+    </div>
+  </div>
+
+  <script>
+    // Initialize cart and products
+    let cart = JSON.parse(localStorage.getItem('cart')) || { items: [], count: 0, total: 0 };
+    let products = JSON.parse(localStorage.getItem('products')) || [
+      { id: 1, name: 'Camiseta Básica', price: 39.90, image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab', stock: 10 },
+      { id: 2, name: 'Calça Jeans', price: 99.90, image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b', stock: 5 },
+      { id: 3, name: 'Jaqueta Casual', price: 149.90, image: 'https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3', stock: 3 }
+    ];
+    let notifications = [];
+    const MIN_STOCK = 5;
+    const ADMIN_PASSWORD = 'admin123'; // Hardcoded for simplicity
+
+    // Check stock and generate notifications
+    function checkStock() {
+      notifications = products.filter(p => p.stock <= MIN_STOCK).map(p => `${p.name} está com estoque baixo: ${p.stock} unidades`);
+      document.getElementById('notification-count').textContent = notifications.length;
+      updateNotifications();
+    }
+
+    // Update notifications display
+    function updateNotifications() {
+      const list = document.getElementById('notification-list');
+      list.innerHTML = '';
+      notifications.forEach(note => {
+        const li = document.createElement('li');
+        li.textContent = note;
+        li.className = 'text-red-600';
+        list.appendChild(li);
+      });
+    }
+
+    // Cart functions
+    function addToCart(itemName, price, productId) {
+      const product = products.find(p => p.id === productId);
+      if (product.stock <= 0) {
+        alert(`${itemName} está fora de estoque!`);
+        return;
+      }
+      cart.items.push({ name: itemName, price: price, productId: productId });
+      cart.count++;
+      cart.total += price;
+      product.stock--;
+      checkStock();
+      updateCart();
+      saveCart();
+      saveProducts();
+      alert(`${itemName} adicionado ao carrinho! Total: R$ ${cart.total.toFixed(2)}`);
+    }
+
+    function clearCart() {
+      cart = { items: [], count: 0, total: 0 };
+      updateCart();
+      saveCart();
+    }
+
+    function updateCart() {
+      document.getElementById('cart-count').textContent = cart.count;
+      document.getElementById('cart-total').textContent = cart.total.toFixed(2);
+      const cartItems = document.getElementById('cart-items');
+      cartItems.innerHTML = '';
+      cart.items.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - R$ ${item.price.toFixed(2)}`;
+        li.className = 'text-gray-700';
+        cartItems.appendChild(li);
+      });
+    }
+
+    function saveCart() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    // Product management
+    function saveProducts() {
+      localStorage.setItem('products', JSON.stringify(products));
+    }
+
+    function renderProducts() {
+      const container = document.getElementById('products');
+      container.innerHTML = '';
+      products.forEach(product => {
+        const div = document.createElement('div');
+        div.className = 'bg-white rounded-lg shadow-md overflow-hidden';
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover">
+          <div class="p-4">
+            <h3 class="text-xl font-semibold">${product.name}</h3>
+            <p class="text-gray-600">R$ ${product.price.toFixed(2)}</p>
+            <p class="text-gray-500">Estoque: ${product.stock}</p>
+            <button onclick="addToCart('${product.name}', ${product.price}, ${product.id})" class="mt-4 w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition">Adicionar ao Carrinho</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+      renderAdminProductList();
+      checkStock();
+    }
+
+    // Admin functions
+    function promptAdminLogin() {
+      document.getElementById('products').classList.add('hidden');
+      document.getElementById('notifications').classList.add('hidden');
+      document.getElementById('admin').classList.remove('hidden');
+      document.getElementById('admin-content').classList.add('hidden');
+      document.getElementById('admin-login').classList.remove('hidden');
+    }
+
+    function loginAdmin() {
+      const password = document.getElementById('admin-password').value;
+      if (password === ADMIN_PASSWORD) {
+        document.getElementById('admin-login').classList.add('hidden');
+        document.getElementById('admin-content').classList.remove('hidden');
+        renderAdminProductList();
+      } else {
+        alert('Senha incorreta!');
+      }
+    }
+
+    function renderAdminProductList() {
+      const list = document.getElementById('product-list');
+      list.innerHTML = '';
+      products.forEach(product => {
+        const li = document.createElement('li');
+        li.className = 'flex justify-between items-center p-2 border-b';
+        li.innerHTML = `
+          ${product.name} - R$ ${product.price.toFixed(2)} - Estoque: ${product.stock}
+          <div>
+            <button onclick="editProduct(${product.id})" class="bg-yellow-500 text-white py-1 px-2 rounded hover:bg-yellow-600 transition">Editar</button>
+            <button onclick="deleteProduct(${product.id})" class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600 transition">Excluir</button>
+          </div>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    function editProduct(id) {
+      const product = products.find(p => p.id === id);
+      document.getElementById('product-name').value = product.name;
+      document.getElementById('product-price').value = product.price;
+      document.getElementById('product-image').value = product.image;
+      document.getElementById('product-stock').value = product.stock;
+      document.getElementById('add-product-form').onsubmit = function(e) {
+        e.preventDefault();
+        product.name = document.getElementById('product-name').value;
+        product.price = parseFloat(document.getElementById('product-price').value);
+        product.image = document.getElementById('product-image').value;
+        product.stock = parseInt(document.getElementById('product-stock').value);
+        saveProducts();
+        renderProducts();
+        resetForm();
+      };
+    }
+
+    function deleteProduct(id) {
+      products = products.filter(p => p.id !== id);
+      saveProducts();
+      renderProducts();
+    }
+
+    function resetForm() {
+      document.getElementById('add-product-form').reset();
+      document.getElementById('add-product-form').onsubmit = function(e) {
+        e.preventDefault();
+        const newProduct = {
+          id: products.length ? Math.max(...products.map(p => p.id)) + 1 : 1,
+          name: document.getElementById('product-name').value,
+          price: parseFloat(document.getElementById('product-price').value),
+          image: document.getElementById('product-image').value,
+          stock: parseInt(document.getElementById('product-stock').value)
+        };
+        products.push(newProduct);
+        saveProducts();
+        renderProducts();
+        this.reset();
+      };
+    }
+
+    // Modal controls
+    function openCart() {
+      document.getElementById('cart-modal').classList.remove('hidden');
+      document.getElementById('products').classList.add('hidden');
+      document.getElementById('notifications').classList.add('hidden');
+      document.getElementById('admin').classList.add('hidden');
+    }
+
+    function closeCart() {
+      document.getElementById('cart-modal').classList.add('hidden');
+      document.getElementById('products').classList.remove('hidden');
+    }
+
+    function showNotifications() {
+      document.getElementById('notifications').classList.remove('hidden');
+      document.getElementById('products').classList.add('hidden');
+      document.getElementById('admin').classList.add('hidden');
+      document.getElementById('cart-modal').classList.add('hidden');
+    }
+
+    // Form submission for adding new product
+    document.getElementById('add-product-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const newProduct = {
+        id: products.length ? Math.max(...products.map(p => p.id)) + 1 : 1,
+        name: document.getElementById('product-name').value,
+        price: parseFloat(document.getElementById('product-price').value),
+        image: document.getElementById('product-image').value,
+        stock: parseInt(document.getElementById('product-stock').value)
+      };
+      products.push(newProduct);
+      saveProducts();
+      renderProducts();
+      this.reset();
+    });
+
+    // Initial render
+    renderProducts();
+    updateCart();
+  </script>
+</body>
+</html>
