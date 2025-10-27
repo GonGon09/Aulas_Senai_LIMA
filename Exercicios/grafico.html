@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3 Gráficos com JavaScript (Chart.js)</title>
+  <style>
+    body { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:#f6f8fa; color:#111; padding:24px; }
+    h1 { font-size:20px; margin-bottom:12px; }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:18px; }
+    .card { background:white; padding:12px; border-radius:10px; box-shadow:0 6px 18px rgba(12,20,30,0.06); }
+    .full { grid-column: 1 / -1; }
+    canvas { width:100% !important; height:320px !important; }
+    @media (max-width:800px){ .grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <h1>Exemplos: 3 gráficos com JavaScript (Chart.js)</h1>
+  <p>Este arquivo mostra um gráfico de linha, um gráfico de barras e um gráfico do tipo doughnut (pizza) usando Chart.js via CDN.</p>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Gráfico de Linha (Vendas por mês)</h3>
+      <canvas id="lineChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Gráfico de Barras (Produtos vendidos)</h3>
+      <canvas id="barChart"></canvas>
+    </div>
+
+    <div class="card full">
+      <h3>Gráfico Doughnut (Distribuição de usuários por plano)</h3>
+      <canvas id="doughnutChart"></canvas>
+    </div>
+
+    <div class="card full">
+      <h3>Gráfico Pie (Participação de Mercado)</h3>
+      <canvas id="pieChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // --- Dados e configuração do Gráfico de Linha ---
+    const ctxLine = document.getElementById('lineChart').getContext('2d');
+    const lineChart = new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago'],
+        datasets: [{
+          label: 'Vendas (R$)',
+          data: [1200, 1500, 1000, 1800, 2200, 2000, 2300, 2500],
+          tension: 0.3,
+          fill: true,
+          backgroundColor: 'rgba(54,162,235,0.12)',
+          borderColor: 'rgba(54,162,235,1)',
+          pointRadius: 4,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true },
+          tooltip: { mode: 'index', intersect: false }
+        },
+        scales: {
+          y: { beginAtZero: false, ticks: { callback: (v)=> 'R$ ' + v } }
+        }
+      }
+    });
+
+    // --- Dados e configuração do Gráfico de Barras ---
+    const ctxBar = document.getElementById('barChart').getContext('2d');
+    const barChart = new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+        labels: ['Camisa', 'Calça', 'Tênis', 'Boné', 'Meias'],
+        datasets: [{
+          label: 'Quantidade vendida',
+          data: [45, 28, 35, 12, 22],
+          borderRadius: 6,
+          barThickness: 28,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(255, 159, 64, 0.8)',
+            'rgba(255, 205, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(54, 162, 235, 0.8)'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+
+    // --- Dados e configuração do Gráfico Doughnut ---
+    const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
+    const doughnutChart = new Chart(ctxDoughnut, {
+      type: 'doughnut',
+      data: {
+        labels: ['Gratuito', 'Pro', 'Enterprise'],
+        datasets: [{
+          label: 'Planos',
+          data: [62, 28, 10],
+          hoverOffset: 8,
+          backgroundColor: [
+            'rgba(99, 102, 241, 0.9)',
+            'rgba(16, 185, 129, 0.9)',
+            'rgba(239, 68, 68, 0.9)'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'right' } }
+      }
+    });
+
+    // --- Novo Gráfico Pie ---
+    const ctxPie = document.getElementById('pieChart').getContext('2d');
+    const pieChart = new Chart(ctxPie, {
+      type: 'pie',
+      data: {
+        labels: ['Empresa A', 'Empresa B', 'Empresa C', 'Empresa D'],
+        datasets: [{
+          data: [40, 25, 20, 15],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.9)',
+            'rgba(54, 162, 235, 0.9)',
+            'rgba(255, 205, 86, 0.9)',
+            'rgba(75, 192, 192, 0.9)'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+
+    // Função exemplo: atualizar dados dinamicamente (pode ser usada no console)
+    window.atualizarVendas = function(novosDados){
+      if (!Array.isArray(novosDados) || novosDados.length !== lineChart.data.datasets[0].data.length) {
+        console.warn('Passe um array com', lineChart.data.datasets[0].data.length, 'valores.');
+        return;
+      }
+      lineChart.data.datasets[0].data = novosDados;
+      lineChart.update();
+    }
+  </script>
+</body>
+</html>
